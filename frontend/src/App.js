@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div className='App'>
-      <h1>Hello from App</h1>
+      <h1>Hello from App!</h1>
       <pre>{JSON.stringify(items, null, 2)}</pre>
     </div>
   );
