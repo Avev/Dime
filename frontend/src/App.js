@@ -1,26 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';
-import { itemService } from './services/itemService';
+import ResponsiveAppBar from './cmps/AppHeader';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ItemApp from './views/ItemApp';
+import HomePage from './views/HomePage';
 
 function App() {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  const fetchItems = async () => {
-    const items = await itemService.query();
-    console.log('item')
-    setItems(items);
-  };
-
   return (
-    <div className='App'>
-      <h1>Hello from App!</h1>
-      <pre>{JSON.stringify(items, null, 2)}</pre>
-    </div>
+    <Router>
+      <div className='App'>
+        <ResponsiveAppBar />
+        <Switch>
+          <Route component={ItemApp} path='/item' />
+          <Route component={HomePage} path='/' />
+        </Switch>
+        {/* <pre>{JSON.stringify(items, null, 2)}</pre> */}
+      </div>
+    </Router>
   );
 }
 

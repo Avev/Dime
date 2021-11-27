@@ -25,6 +25,7 @@ const gItems = [
     },
   },
 ];
+
 async function query() {
   try {
     return gItems;
