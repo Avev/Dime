@@ -5,6 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import { utilService } from '../services/utilService';
+
 
 const ItemList = ({ items }) => {
   return (
@@ -16,16 +18,17 @@ const ItemList = ({ items }) => {
   );
 };
 
+// Code taken from MUI.. imgUrl is just temporary, until we have actual images for each product.
 function ActionAreaCard({ item }) {
+  const imgUrl = React.useMemo(
+    () =>
+      `https://picsum.photos/id/${utilService.getRandomInt(100, 1000)}/200/300`,
+    []
+  );
   return (
-    <Card sx={{ maxWidth: '100%' }}>
-      <CardActionArea>
-        <CardMedia
-          component='img'
-          height='140'
-          image='/static/images/cards/contemplative-reptile.jpg'
-          alt='green iguana'
-        />
+    <Card sx={{ maxWidth: '100%', my: 2 }}>
+      <CardActionArea
+        sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
         <CardContent>
           <Typography gutterBottom variant='h5' component='div'>
             {item.name}
@@ -35,6 +38,13 @@ function ActionAreaCard({ item }) {
             species, ranging across all continents except Antarctica
           </Typography>
         </CardContent>
+        <CardMedia
+          component='img'
+          sx={{ width: { xs: '100%', sm: 200 }, order: { xs: '-1', sm: '0' } }}
+          height='160'
+          image={imgUrl}
+          alt='green iguana'
+        />
       </CardActionArea>
     </Card>
   );

@@ -12,6 +12,10 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useHistory } from 'react-router';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from '@mui/material/styles';
+import { ColorModeContext } from '../lib/context/ColorModeContext';
 
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -33,6 +37,9 @@ const pages = [
 
 const ResponsiveAppBar = () => {
   const history = useHistory();
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -56,9 +63,9 @@ const ResponsiveAppBar = () => {
     history.push(endpoint);
     setAnchorElNav(null);
   };
-  
+
   return (
-    <AppBar position='static'>
+    <AppBar position='static' sx={{mb: 2}}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Typography
@@ -122,7 +129,16 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color='inherit'>
+            {theme.palette.mode === 'dark' ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

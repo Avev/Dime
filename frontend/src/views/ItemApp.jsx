@@ -1,4 +1,6 @@
+import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
+import ItemFilter from '../cmps/ItemFilter';
 import ItemList from '../cmps/ItemList';
 import { itemService } from '../services/itemService';
 
@@ -15,10 +17,10 @@ const ItemApp = () => {
   };
 
   return (
-    <div className='container'>
-      <h1>Hello from Item App</h1>
+    <Container maxWidth='xl'>
+      <ItemFilter />
       <ItemList items={items} />
-    </div>
+    </Container>
   );
 };
 
