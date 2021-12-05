@@ -12,7 +12,7 @@ const ItemList = ({ items }) => {
   return (
     <Stack>
       {items.map((item) => (
-        <ActionAreaCard key={item.id} item={item} />
+        <ActionAreaCard key={item._id} item={item} />
       ))}
     </Stack>
   );
@@ -31,11 +31,17 @@ function ActionAreaCard({ item }) {
         sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
         <CardContent>
           <Typography gutterBottom variant='h5' component='div'>
-            {item.name}
+            {item.title}
           </Typography>
           <Typography variant='body2' color='text.secondary'>
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {item.category}, {item.location}
+            {/*Lizards are a widespread group of squamate reptiles, with over 6,000*/}
+            {/*species, ranging across all continents except Antarctica*/}
+          </Typography>
+          <Typography variant='body2' color='text.secondary'>
+            {item.description}
+            {/*Lizards are a widespread group of squamate reptiles, with over 6,000*/}
+            {/*species, ranging across all continents except Antarctica*/}
           </Typography>
         </CardContent>
         <CardMedia
