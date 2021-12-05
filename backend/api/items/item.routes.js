@@ -1,11 +1,3 @@
-// const express = require('express');
-// const { getItems } = require('./item.controller');
-// const router = express.Router();
-//
-// router.get('/', getItems);
-//
-// module.exports = router;
-
 const express = require('express');
 const router = express.Router();
 const itemController = require('./item.controller');
