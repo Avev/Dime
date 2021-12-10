@@ -21,6 +21,10 @@ const listingSchema = new Schema({
   description: {
     type: String
   },
+  phone: {
+    type: Number,
+    required: true
+  },
 }, {timestamps: true})
 
 // listing model

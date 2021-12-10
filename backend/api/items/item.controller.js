@@ -43,7 +43,7 @@ const addItem = (req, res) => {
       const imageUploadFile = req.files.image;
       const newImageName = Date.now() + imageUploadFile.name;
       listing["image"] = newImageName;
-      const uploadPath = require('path').resolve('./') + '/backend/images/' + newImageName;
+      const uploadPath = require('path').resolve('./') + '/frontend/public/images/' + newImageName;
       imageUploadFile.mv(uploadPath, err => {
           if(err) return res.status(500).send(err);
       });
@@ -63,7 +63,7 @@ const deleteItem = (req, res) => {
     ItemServices.findById(id)
         .then(result => {
             if (result.image) {
-                const imagePath = require('path').resolve('./') + '/backend/images/' + result.image;
+                const imagePath = require('path').resolve('./') + '/frontend/public/images/' + result.image;
                 fs.unlink(imagePath, err => {
                     if (err) return res.status(500).send(err);
                 });

@@ -16,7 +16,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from '@mui/material/styles';
 import { ColorModeContext } from '../lib/context/ColorModeContext';
-
+import ItemAdd from "./ItemAdd";
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -129,6 +129,7 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
+          <ItemAdd/>
           <IconButton
             sx={{ ml: 1 }}
             onClick={colorMode.toggleColorMode}
