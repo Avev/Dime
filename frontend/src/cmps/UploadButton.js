@@ -6,18 +6,24 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Stack from '@mui/material/Stack';
 
 const Input = styled('input')({
-    display: 'none',
+  display: 'none',
 });
 
-export default function UploadButton() {
-    return (
-        <Stack direction="row" alignItems="center" spacing={2}>
-            <label htmlFor="contained-button-file">
-                <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                <Button variant="contained" component="span">
-                    Select Image
-                </Button>
-            </label>
-        </Stack>
-    );
+export default function UploadButton({ ...rest }) {
+  return (
+    <Stack direction='row' alignItems='center' spacing={2}>
+      <label htmlFor='contained-button-file'>
+        <Input
+          {...rest}
+          accept='image/*'
+          id='contained-button-file'
+          multiple
+          type='file'
+        />
+        <Button variant='contained' component='span'>
+          Select Image
+        </Button>
+      </label>
+    </Stack>
+  );
 }
