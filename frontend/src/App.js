@@ -43,6 +43,12 @@ function App() {
           <div className='App'>
             <ResponsiveAppBar />
             <Switch>
+              <Route path='/item/sortByDate'>
+                  <ItemApp sortBy='date'/>
+              </Route>
+              <Route path='/item/sortByLocation'>
+                <ItemApp sortBy='location'/>
+              </Route>
               <Route component={ItemApp} path='/item' />
               <Route component={HomePage} path='/' />
             </Switch>

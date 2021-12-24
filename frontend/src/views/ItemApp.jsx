@@ -4,16 +4,34 @@ import ItemFilter from '../cmps/ItemFilter';
 import ItemList from '../cmps/ItemList';
 import { itemService } from '../services/itemService';
 
-const ItemApp = () => {
+const ItemApp = ({sortBy}) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetchItems();
+      if (sortBy === 'date') {
+          fetchItemsSortByDate()
+      }
+      else if (sortBy === 'location') {
+          fetchItemsSortByLocation()
+      }
+      else {
+          fetchItems();
+      }
   }, []);
 
   const fetchItems = async () => {
     const items = await itemService.query();
     setItems(items);
+  };
+
+  const fetchItemsSortByDate = async () => {
+      const items = await itemService.querySortByDate();
+      setItems(items);
+  };
+
+  const fetchItemsSortByLocation = async () => {
+      const items = await itemService.querySortByLocation();
+      setItems(items);
   };
 
   return (

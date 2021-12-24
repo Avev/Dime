@@ -12,6 +12,28 @@ const getItems = (req, res) => {
     });
 };
 
+// show all the listings sorted by date
+const getItemsSortByDate = (req, res) => {
+  ItemServices.find().sort({createdAt: -1})
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+};
+
+// show all the listings sorted by location
+const getItemsSortByLocation = (req, res) => {
+  ItemServices.find().sort({location: 1})
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+};
+
 // shows the item with the given id
 const getItem = (req, res) => {
   const id = req.params.id;
@@ -101,6 +123,8 @@ const updateItem = (req, res) => {
 
 module.exports = {
   getItems: getItems,
+  getItemsSortByDate: getItemsSortByDate,
+  getItemsSortByLocation: getItemsSortByLocation,
   getItem: getItem,
   getItemsByCategory: getItemsByCategory,
   addItem: addItem,

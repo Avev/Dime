@@ -4,6 +4,8 @@ const itemController = require('./item.controller');
 
 
 router.get('/', itemController.getItems);
+router.get('/sortByDate', itemController.getItemsSortByDate);
+router.get('/sortByLocation', itemController.getItemsSortByLocation);
 router.get('/:id', itemController.getItem);
 router.get('/:category', itemController.getItemsByCategory);
 router.post('/', itemController.addItem);
