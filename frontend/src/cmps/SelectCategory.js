@@ -43,16 +43,16 @@ const categories = [
 export default function SelectCategory({ value, onChange }) {
   return (
     <>
+      <InputLabel>Category</InputLabel>
       <Select
         onChange={onChange}
         value={value}
         name='category'
-        style={{ width: '100%' }}
+        style={{ width: '20%' }}
         margin='dense'
         label='Category'
         required
         variant='standard'
-        label='Category'
         helperText='Please select your category'>
         {categories.map((option) => (
           <MenuItem key={option.value} value={option.value}>

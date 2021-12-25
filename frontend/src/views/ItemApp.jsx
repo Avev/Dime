@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import ItemFilter from '../cmps/ItemFilter';
 import ItemList from '../cmps/ItemList';
 import { itemService } from '../services/itemService';
+import SelectSort from "../cmps/SelectSort";
+import SelectCategory from "../cmps/SelectCategory";
+
 
 const ItemApp = ({sortBy}) => {
   const [items, setItems] = useState([]);
@@ -37,6 +40,10 @@ const ItemApp = ({sortBy}) => {
   return (
     <Container maxWidth='xl'>
       <ItemFilter />
+      <SelectCategory />
+      <SelectSort
+          // onChange={}
+      />
       <ItemList items={items} />
     </Container>
   );
