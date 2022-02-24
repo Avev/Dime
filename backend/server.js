@@ -3,6 +3,20 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 const fileUpload = require('express-fileupload');
+const passportSetup = require('./api/auth/auth')
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+
+app.use(cookieSession({
+  maxAge: 24*60*60*1000, // session cookie lasts a day in milliseconds
+  //***********************************************************
+  keys: ['bestEncryptionEver'] // encrypts the ids
+  //***********************************************************
+}));
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 const port = process.env.PORT || 3030;
 
@@ -20,9 +34,16 @@ app.use(cors(corsOptions));
 const itemRoutes = require('./api/items/item.routes');
 app.use('/api/item', itemRoutes);
 
+const authRoutes = require('./api/auth/auth.routes');
+app.use('/auth', authRoutes);
+
 
 // connect to MongoDB
+
+// ***********************************************************
 const dbURI = 'mongodb+srv://AvivYarden:AvivYarden@cluster0.tizip.mongodb.net/Cluster0?retryWrites=true&w=majority';
+// ***********************************************************
+
 mongoose.connect(dbURI)
     .then((result) =>
         app.listen(port, () => console.log('Server is running on port: ' + port)))
