@@ -9,6 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import SelectCategory from './SelectCategory';
 import UploadButton from './UploadButton';
 import { itemService } from '../services/itemService';
+import classes from '../assets/styles/cmps/ItemAdd.module.css';
+import { useRef } from 'react';
+import { useTheme } from '@mui/material';
 
 const EMPTY_FORM_DATA = {
   title: '',
@@ -16,26 +19,27 @@ const EMPTY_FORM_DATA = {
   location: '',
   description: '',
   phone: '',
-  image: '',
+  image: null,
 };
 
 const DEV_TEST_DATA = {
   title: 'Yarden test',
   category: 'furniture',
-  location: 'petah tikva',
+  location: 'petahTikva',
   description: 'Testing',
   phone: '0542487955',
-  image: '',
+  image: null,
 };
 
 export default function ItemAdd() {
   const [open, setOpen] = React.useState(false);
-  const [formData, setFormData] = React.useState(EMPTY_FORM_DATA);
+  const [itemToAdd, setItemToAdd] = React.useState(DEV_TEST_DATA);
+  const { palette } = useTheme();
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     try {
-      await itemService.add(formData);
+      await itemService.add(itemToAdd);
     } catch (err) {
       console.error('err: ', err);
     }
@@ -50,11 +54,12 @@ export default function ItemAdd() {
   };
 
   const handleChange = (ev) => {
-    const value =
-      ev.target.type === 'file' ? ev.target.files[0] : ev.target.value;
-
-    const updatedFormData = { ...formData, [ev.target.name]: value };
-    setFormData(updatedFormData);
+    let { value, name, type, files } = ev.target;
+    if (type === 'file') {
+      value = files[0];
+    }
+    const updatedFormData = { ...itemToAdd, [name]: value };
+    setItemToAdd(updatedFormData);
   };
 
   return (
@@ -62,14 +67,17 @@ export default function ItemAdd() {
       <Button variant='contained' color='secondary' onClick={handleClickOpen}>
         Add item
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add item</DialogTitle>
+      <Dialog className={classes.dialog} open={open} onClose={handleClose}>
+        <DialogTitle sx={{ borderBottom: `2px solid ${palette.primary.main}` }}>
+          Add item
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>Write your listing details here</DialogContentText>
           <form onSubmit={handleSubmit}>
             <TextField
+              className={classes.itemAddField}
               name='title'
-              value={formData.title}
+              value={itemToAdd.title}
               onChange={handleChange}
               autoFocus
               required
@@ -79,10 +87,15 @@ export default function ItemAdd() {
               fullWidth
               variant='standard'
             />
-            <SelectCategory value={formData.category} onChange={handleChange} />
+            <SelectCategory
+              value={itemToAdd.category}
+              onChange={handleChange}
+              className={[classes.itemAddField, classes.selectCategory]}
+            />
             <TextField
+              className={classes.itemAddField}
               name='location'
-              value={formData.location}
+              value={itemToAdd.location}
               onChange={handleChange}
               autoFocus
               required
@@ -93,8 +106,9 @@ export default function ItemAdd() {
               variant='standard'
             />
             <TextField
+              className={classes.itemAddField}
               name='description'
-              value={formData.description}
+              value={itemToAdd.description}
               onChange={handleChange}
               autoFocus
               margin='dense'
@@ -106,8 +120,9 @@ export default function ItemAdd() {
               variant='standard'
             />
             <TextField
+              className={classes.itemAddField}
               name='phone'
-              value={formData.phone}
+              value={itemToAdd.phone}
               onChange={handleChange}
               autoFocus
               required
@@ -119,8 +134,12 @@ export default function ItemAdd() {
             />
             <UploadButton onChange={handleChange} name='image' />
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type='submit'>Post</Button>
+              <Button color='warning' onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button color='secondary' type='submit'>
+                Post
+              </Button>
             </DialogActions>
           </form>
         </DialogContent>

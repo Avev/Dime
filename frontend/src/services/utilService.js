@@ -1,6 +1,10 @@
+import axios from 'axios';
+
 export const utilService = {
   getRandomInt,
-  isDev
+  isDev,
+  createFileFormData,
+  uploadFile,
 };
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -11,4 +15,16 @@ function getRandomInt(min, max) {
 
 function isDev() {
   return process.env.NODE_ENV === 'development';
+}
+
+function createFileFormData(key, file) {
+  var formData = new FormData();
+  formData.append(key, file);
+  return formData;
+}
+
+function uploadFile(url, file) {
+  return axios.post(url, file, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 }

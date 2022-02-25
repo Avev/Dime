@@ -24,7 +24,6 @@ function App() {
     }),
     []
   );
-
   const theme = useMemo(
     () =>
       createTheme({

@@ -1,0 +1,27 @@
+.container {
+  padding: 1.25rem;
+}
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.25rem;
+}
+
+.filterField {
+  min-width: 150px;
+  margin-top: 0 !important;
+}
+
+.selectContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectContainer label {
+  font-size: .8rem;
+  margin-bottom: .2rem;
+}
+
+.fieldSubtitle {
+  margin-bottom: .6rem;
+}

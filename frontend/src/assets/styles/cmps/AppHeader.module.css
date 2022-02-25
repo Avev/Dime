@@ -1,0 +1,8 @@
+.appBar {
+  position: sticky;
+  top: 0;
+}
+
+.appBar + * {
+    margin-top: 90px;
+}

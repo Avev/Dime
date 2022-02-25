@@ -16,7 +16,8 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from '@mui/material/styles';
 import { ColorModeContext } from '../lib/context/ColorModeContext';
-import ItemAdd from "./ItemAdd";
+import ItemAdd from './ItemAdd';
+import classes from '../assets/styles/cmps/AppHeader.module.css';
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -65,7 +66,9 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position='static' sx={{mb: 2}}>
+    <AppBar
+      className={classes.appBar}
+      sx={{ borderBottom: `1px solid ${theme.palette.primary.main}` }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Typography
@@ -73,7 +76,7 @@ const ResponsiveAppBar = () => {
             noWrap
             component='div'
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
-            LOGO
+            Dime
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -117,7 +120,7 @@ const ResponsiveAppBar = () => {
             noWrap
             component='div'
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            LOGO
+            Dime
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -129,7 +132,7 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-          <ItemAdd/>
+          <ItemAdd />
           <IconButton
             sx={{ ml: 1 }}
             onClick={colorMode.toggleColorMode}

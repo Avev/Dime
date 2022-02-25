@@ -1,9 +1,8 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import { Box } from '@mui/system';
 
 const categories = [
   {
@@ -40,15 +39,15 @@ const categories = [
   },
 ];
 
-export default function SelectCategory({ value, onChange }) {
+export default function SelectCategory({ value, onChange, className }) {
   return (
-    <>
+    <Box className={className}>
       <InputLabel>Category</InputLabel>
       <Select
         onChange={onChange}
         value={value}
+        style={{ width: '100%' }}
         name='category'
-        style={{ width: '20%' }}
         margin='dense'
         label='Category'
         required
@@ -60,6 +59,6 @@ export default function SelectCategory({ value, onChange }) {
           </MenuItem>
         ))}
       </Select>
-    </>
+    </Box>
   );
 }
