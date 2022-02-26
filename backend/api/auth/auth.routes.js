@@ -5,11 +5,13 @@ const passport = require('passport');
 //     res.send('logging in')
 // })
 
+// logout request
 router.get('/logout', (req, res) => {
     req.logout();
     res.send('logging out')
 })
 
+// authentication request
 router.get('/google', passport.authenticate('google', {
     scope: [
         'profile',
@@ -18,8 +20,9 @@ router.get('/google', passport.authenticate('google', {
     ]
 }));
 
+// redirect after authentication
 router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-   res.send('you reached the callback URI')
+   res.send(req.user);
 });
 
 module.exports = router;
