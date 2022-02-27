@@ -5,7 +5,7 @@ import HomePage from './views/HomePage';
 import { createTheme, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useMemo, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { ColorModeContext } from './lib/context/ColorModeContext';
 
 const darkTheme = createTheme({
@@ -15,6 +15,29 @@ const darkTheme = createTheme({
 });
 
 function App() {
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+        fetch('http://localhost:3030/auth/login/success', {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+            },
+        })
+            .then(res => {
+                if(res.status === 200) return res.json();
+                throw new Error('authentication failed');
+            })
+            .then(resObject => {
+                setUser(resObject.user);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+
   const [mode, setMode] = useState('light');
   const colorMode = useMemo(
     () => ({
@@ -40,7 +63,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <div className='App'>
-            <ResponsiveAppBar />
+            <ResponsiveAppBar user={user} />
             <Switch>
               <Route path='/item/sortByDate'>
                   <ItemApp sortBy='date'/>

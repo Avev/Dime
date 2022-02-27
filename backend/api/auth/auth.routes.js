@@ -10,9 +10,8 @@ const redirectURL = 'http://localhost:3000'
 // endpoint for checking if the user is logged and if so to get it
 router.get('/login/success', (req, res) => {
     // if user is logged in
-    // console.log(req.user)
     if (req.user) {
-        res.status(200).send(req.user);
+        res.status(200).send({user: req.user});
     }
 })
 

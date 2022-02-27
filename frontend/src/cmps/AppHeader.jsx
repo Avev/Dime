@@ -37,7 +37,7 @@ const pages = [
   },
 ];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (user) => {
   const history = useHistory();
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
@@ -133,7 +133,7 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-          <LoginButton/>
+          <LoginButton user={user.user}/>
           <ItemAdd />
           <IconButton
             sx={{ ml: 1 }}
