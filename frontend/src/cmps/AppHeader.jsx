@@ -18,6 +18,7 @@ import { useTheme } from '@mui/material/styles';
 import { ColorModeContext } from '../lib/context/ColorModeContext';
 import ItemAdd from './ItemAdd';
 import classes from '../assets/styles/cmps/AppHeader.module.css';
+import LoginButton from './LoginButton';
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -132,6 +133,7 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
+          <LoginButton/>
           <ItemAdd />
           <IconButton
             sx={{ ml: 1 }}
