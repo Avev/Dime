@@ -20,21 +20,40 @@ import ItemAdd from './ItemAdd';
 import classes from '../assets/styles/cmps/AppHeader.module.css';
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-const pages = [
-  {
-    name: 'Products',
-    to: '/item',
-  },
-  {
-    name: 'About',
-    to: '/about',
-  },
-  {
-    name: 'Contact Us',
-    to: '/contact-us',
-  },
-];
+const pages = {
+  headerLinks: [
+    {
+      name: 'Products',
+      to: '/item',
+    },
+    {
+      name: 'About',
+      to: '/about',
+    },
+    {
+      name: 'Contact Us',
+      to: '/contact-us',
+    },
+  ],
+  menuLinks: [
+    {
+      name: 'Profile',
+      to: '/profile',
+    },
+    {
+      name: 'Account',
+      to: '/account',
+    },
+    {
+      name: 'Dashboard',
+      to: '/dashboard',
+    },
+    {
+      name: 'Logout',
+      to: '/logout',
+    },
+  ],
+};
 
 const ResponsiveAppBar = () => {
   const history = useHistory();
@@ -52,7 +71,8 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (route) => {
+    history.push(`${route}`);
     setAnchorElNav(null);
   };
 
@@ -106,7 +126,7 @@ const ResponsiveAppBar = () => {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}>
-              {pages.map((page) => (
+              {pages.headerLinks.map((page) => (
                 <MenuItem
                   key={page.name}
                   onClick={() => handleClickPageLink(page.to)}>
@@ -123,7 +143,7 @@ const ResponsiveAppBar = () => {
             Dime
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.headerLinks.map((page) => (
               <Button
                 key={page.name}
                 onClick={() => handleClickPageLink(page.to)}
@@ -163,10 +183,13 @@ const ResponsiveAppBar = () => {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}>
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
+              onClose={handleCloseUserMenu}
+              >
+              {pages.menuLinks.map((setting) => (
+                <MenuItem
+                  key={setting.name}
+                  onClick={() => handleCloseNavMenu(setting.to)}>
+                  <Typography textAlign='center'>{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

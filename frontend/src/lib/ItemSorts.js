@@ -4,7 +4,7 @@ export const ItemSorts = {
     label: 'Location',
   },
   Date: {
-    value: 'date',
+    value: 'createdAt',
     label: 'Date',
   },
 };

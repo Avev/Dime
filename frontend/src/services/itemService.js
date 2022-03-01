@@ -12,8 +12,7 @@ export const itemService = {
 const BASE_URL = 'api/item';
 
 //LIST ITEMS
-async function query(filter = {}) {
-  console.log('filter: ', filter);
+async function query(filter = {}, sort = '') {
   const res = await axios.get(`http://localhost:3030/${BASE_URL}`, {
     params: filter,
   });

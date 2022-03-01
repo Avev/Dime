@@ -12,9 +12,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Box } from '@mui/system';
 import { ItemCategories } from '../lib/ItemCategories';
-import { DebugView } from './DebugView';
 import { Locations } from '../lib/Locations';
 import classes from '../assets/styles/cmps/ItemFilter.module.css';
+
 const ItemFilterFieldNames = {
   Text: 'txt',
   Price: {
@@ -60,6 +60,7 @@ const ItemFilter = ({ onFilter }) => {
   });
   const _onFilter = useCallback(debounce(onFilter, 400), []);
   const theme = useTheme();
+  
   useEffect(() => {
     _onFilter(filter);
   }, [filter]);

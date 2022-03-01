@@ -1,12 +1,12 @@
-import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ItemFilter from '../cmps/ItemFilter';
 import ItemList from '../cmps/ItemList';
 import { itemService } from '../services/itemService';
 import ItemSort from '../cmps/ItemSort';
 import { Box } from '@mui/system';
+import { PageContainer } from '../cmps/layout-cmps/PageContainer';
 
-const ItemApp = ({ sortBy }) => {
+const ItemApp = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -19,18 +19,8 @@ const ItemApp = ({ sortBy }) => {
     // }
   }, []);
 
-  const fetchItems = async (filterBy) => {
-    const items = await itemService.query(filterBy);
-    setItems(items);
-  };
-
-  const fetchItemsSortByDate = async () => {
-    const items = await itemService.querySortByDate();
-    setItems(items);
-  };
-
-  const fetchItemsSortByLocation = async () => {
-    const items = await itemService.querySortByLocation();
+  const fetchItems = async (filterBy, sortBy) => {
+    const items = await itemService.query(filterBy, sortBy);
     setItems(items);
   };
 
@@ -38,23 +28,38 @@ const ItemApp = ({ sortBy }) => {
     fetchItems(filter);
   };
 
+  const onSort = (sort) => {
+    const { value, isAsc } = sort;
+    const itemsCopy = [...items];
+    const sortedItems = itemsCopy.sort((i1, i2) => {
+      return isAsc
+        ? i1[value].localeCompare(i2[value])
+        : i2[value].localeCompare(i1[value]);
+    });
+    setItems(sortedItems);
+  };
+
   return (
-    <Container maxWidth='xl'>
+    <PageContainer>
       <TopBar
         itemFilterProps={{
           onFilter,
           debounce: true,
         }}
+        itemSortProps={{
+          onSort,
+        }}
       />
       <ItemList items={items} />
-    </Container>
+    </PageContainer>
   );
 };
-const TopBar = ({ itemFilterProps }) => {
+
+const TopBar = ({ itemFilterProps, itemSortProps }) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <ItemFilter {...itemFilterProps} />
-      <ItemSort />
+      <ItemSort {...itemSortProps} />
     </Box>
   );
 };

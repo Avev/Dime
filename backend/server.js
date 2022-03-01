@@ -18,7 +18,6 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const port = process.env.PORT || 3030;
 
 app.use(express.json());
 // take url encoded data and parse to to use as an object
@@ -43,6 +42,7 @@ app.use('/auth', authRoutes);
 // ***********************************************************
 const dbURI = 'mongodb+srv://AvivYarden:AvivYarden@cluster0.tizip.mongodb.net/Cluster0?retryWrites=true&w=majority';
 // ***********************************************************
+const port = process.env.PORT || 3030;
 
 mongoose.connect(dbURI)
     .then((result) =>

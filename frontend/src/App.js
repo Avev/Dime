@@ -1,4 +1,4 @@
-import ResponsiveAppBar from './cmps/AppHeader';
+import AppHeader from './cmps/AppHeader';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ItemApp from './views/ItemApp';
 import HomePage from './views/HomePage';
@@ -7,6 +7,8 @@ import { ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useMemo, useState } from 'react';
 import { ColorModeContext } from './lib/context/ColorModeContext';
+import UserProfile from './views/UserProfile';
+import { UserProvider } from './lib/context/UserContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -39,20 +41,17 @@ function App() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <div className='App'>
-            <ResponsiveAppBar />
-            <Switch>
-              <Route path='/item/sortByDate'>
-                  <ItemApp sortBy='date'/>
-              </Route>
-              <Route path='/item/sortByLocation'>
-                <ItemApp sortBy='location'/>
-              </Route>
-              <Route component={ItemApp} path='/item' />
-              <Route component={HomePage} path='/' />
-            </Switch>
-            {/* <pre>{JSON.stringify(items, null, 2)}</pre> */}
-          </div>
+          <UserProvider>
+            <div className='App'>
+              <AppHeader />
+              <Switch>
+                <Route component={ItemApp} path='/item' />
+                <Route component={UserProfile} path='/profile' />
+                <Route component={HomePage} path='/' />
+              </Switch>
+              {/* <pre>{JSON.stringify(items, null, 2)}</pre> */}
+            </div>
+          </UserProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </Router>

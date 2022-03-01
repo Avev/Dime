@@ -6,6 +6,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { OutlinedInput } from '@mui/material';
 import { ItemSorts } from '../lib/ItemSorts';
+import { useEffect } from 'react';
 
 const itemSorts = Object.values(ItemSorts).sort((s1, s2) => {
   return s1.value.localeCompare(s2.value);
@@ -15,12 +16,26 @@ const itemSortStyles = {
   minWidth: '140px',
 };
 const itemSortProps = {
-  name: 'sort',
+  name: 'value',
   margin: 'dense',
   variant: 'standard',
 };
 
-export default function ItemSort({ value = itemSorts[0].value, onChange }) {
+export default function ItemSort({ onSort }) {
+  const [sort, setSort] = React.useState({
+    isAsc: true,
+    value: itemSorts[0].value,
+  });
+
+  useEffect(() => {
+    onSort(sort);
+  }, [sort]);
+
+  const handleChange = (ev) => {
+    const { value, name } = ev.target;
+    setSort((prevSort) => ({ ...prevSort, [name]: value }));
+  };
+
   return (
     <Box
       sx={{
@@ -33,8 +48,8 @@ export default function ItemSort({ value = itemSorts[0].value, onChange }) {
       <Select
         sx={itemSortStyles}
         {...itemSortProps}
-        value={value}
-        onChange={onChange}>
+        value={sort.value}
+        onChange={handleChange}>
         {itemSorts.map((s) => (
           <MenuItem key={s.value} value={s.value}>
             {s.label}
