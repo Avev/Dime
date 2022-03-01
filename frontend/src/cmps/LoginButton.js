@@ -30,7 +30,7 @@ export default function LoginButtons(user) {
                         handleClickLogOut()
                     }
                 }}
-            >${buttonName}
+            >{buttonName}
             </Button>
         </Stack>
     );

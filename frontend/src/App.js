@@ -66,7 +66,7 @@ function App() {
           <CssBaseline />
           <UserProvider>
             <div className='App'>
-              <AppHeader />
+              <AppHeader user={user} />
               <Switch>
                 <Route component={ItemApp} path='/item' />
                 <Route component={UserProfile} path='/profile' />
