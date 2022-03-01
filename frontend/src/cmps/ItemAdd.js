@@ -31,7 +31,7 @@ const DEV_TEST_DATA = {
   image: null,
 };
 
-export default function ItemAdd() {
+export default function ItemAdd(user) {
   const [open, setOpen] = React.useState(false);
   const [itemToAdd, setItemToAdd] = React.useState(DEV_TEST_DATA);
   const { palette } = useTheme();
@@ -58,13 +58,25 @@ export default function ItemAdd() {
     if (type === 'file') {
       value = files[0];
     }
+    itemToAdd.userId = user.user._id;
     const updatedFormData = { ...itemToAdd, [name]: value };
     setItemToAdd(updatedFormData);
   };
 
+  const handleClickLogin = () => {
+    window.open('http://localhost:3030/auth/google', '_self')
+  }
+
   return (
     <div>
-      <Button variant='contained' color='secondary' onClick={handleClickOpen}>
+      <Button variant='contained' color='secondary' onClick={() => {
+      if (user.user) {
+        handleClickOpen();
+      }
+      else {
+        handleClickLogin();
+      }
+      }}>
         Add item
       </Button>
       <Dialog className={classes.dialog} open={open} onClose={handleClose}>

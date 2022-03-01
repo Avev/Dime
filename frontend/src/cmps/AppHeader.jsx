@@ -134,7 +134,7 @@ const ResponsiveAppBar = (user) => {
             ))}
           </Box>
           <LoginButton user={user.user}/>
-          <ItemAdd />
+          <ItemAdd user={user.user} />
           <IconButton
             sx={{ ml: 1 }}
             onClick={colorMode.toggleColorMode}
