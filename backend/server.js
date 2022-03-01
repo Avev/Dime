@@ -3,7 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 const fileUpload = require('express-fileupload');
-const passportSetup = require('./api/auth/auth')
+const passportSetup = require('./api/auth/auth');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
@@ -35,6 +35,9 @@ app.use('/api/item', itemRoutes);
 
 const authRoutes = require('./api/auth/auth.routes');
 app.use('/auth', authRoutes);
+
+const profileRoutes = require('./api/profile/profile.routes');
+app.use('/profile', profileRoutes);
 
 
 // connect to MongoDB

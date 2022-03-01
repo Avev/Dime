@@ -5,11 +5,24 @@ const passport = require('passport');
 //     res.send('logging in')
 // })
 
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.send('logging out')
+const redirectURL = 'http://localhost:3000'
+
+// endpoint for checking if the user is logged and if so to get it
+router.get('/login/success', (req, res) => {
+    // if user is logged in
+    if (req.user) {
+        res.status(200).send({user: req.user});
+    }
 })
 
+// logout request
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect(redirectURL)
+    // res.send('logging out')
+})
+
+// authentication request
 router.get('/google', passport.authenticate('google', {
     scope: [
         'profile',
@@ -18,8 +31,16 @@ router.get('/google', passport.authenticate('google', {
     ]
 }));
 
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-   res.send('you reached the callback URI')
-});
+// redirect after authentication
+router.get('/google/redirect', passport.authenticate('google', {
+    successRedirect: redirectURL,
+    failureRedirect: redirectURL,
+}));
+
+// redirect after authentication
+// router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
+//    // res.send(req.user);
+//     res.redirect(redirectURL)
+// });
 
 module.exports = router;

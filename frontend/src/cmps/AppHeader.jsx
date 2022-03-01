@@ -18,6 +18,7 @@ import { useTheme } from '@mui/material/styles';
 import { ColorModeContext } from '../lib/context/ColorModeContext';
 import ItemAdd from './ItemAdd';
 import classes from '../assets/styles/cmps/AppHeader.module.css';
+import LoginButton from './LoginButton';
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const pages = {
@@ -55,7 +56,7 @@ const pages = {
   ],
 };
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (user) => {
   const history = useHistory();
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
@@ -152,7 +153,8 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-          <ItemAdd />
+          <LoginButton user={user.user}/>
+          <ItemAdd user={user.user} />
           <IconButton
             sx={{ ml: 1 }}
             onClick={colorMode.toggleColorMode}

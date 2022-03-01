@@ -62,6 +62,18 @@ const getItemsByCategory = (req, res) => {
     });
 };
 
+// shows the items that are from the given userId
+const getItemsByUserId = (req, res) => {
+  const userId = req.params.userId;
+  ItemServices.find({ userId: userId })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+};
+
 // adding a listing
 const addItem = (req, res) => {
   const listing = new ItemServices(JSON.parse(req.body.document));
@@ -167,6 +179,7 @@ module.exports = {
   getItemsSortByLocation,
   getItem,
   getItemsByCategory,
+  getItemsByUserId,
   addItem,
   addItemImage,
   deleteItem,
