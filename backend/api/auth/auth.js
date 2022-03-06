@@ -1,11 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./auth.service');
-
-//***********************************************************
-GOOGLE_CLIENT_ID = '250343822418-kgkjs6g1au8lmli1f13gldng1v7i3unt.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = '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'
-//**********************************************************
+const keys = require('../../keys');
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -19,23 +15,33 @@ passport.deserializeUser((id, done) => {
 })
 
 passport.use(new GoogleStrategy({
-        clientID: GOOGLE_CLIENT_ID,
-        clientSecret: GOOGLE_CLIENT_SECRET,
+        clientID: keys.google.GOOGLE_CLIENT_ID,
+        clientSecret: keys.google.GOOGLE_CLIENT_SECRET,
         callbackURL: '/auth/google/redirect'
     },
-    function(accessToken, refreshToken, profile, done) {
+    function(accessToken, refreshToken, otherTokenDetails, profile, done) {
+    let tokens = {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+        scope: otherTokenDetails,
+        token_type: otherTokenDetails.token_type,
+        expiry_date: otherTokenDetails.expires_in
+    }
         // checks if the account logged in before and in the database
         User.findOne({googleId: profile.id}).then((currentUser) => {
             if(currentUser){
-                console.log('user is: ', currentUser);
-                done(null, currentUser);
+
+                User.findOneAndUpdate({googleId: profile.id}, {tokens: tokens})
+                    .then((user) => {
+                        done(null, user)
+                    });
             } else{
                 // if it's the accounts first login in adds it to the database
                 new User({
                     username: profile.displayName,
-                    googleId: profile.id
+                    googleId: profile.id,
+                    tokens: tokens
                 }).save().then((newUser) => {
-                    console.log('new user created: ' + newUser);
                     done(null, newUser);
                 });
             }

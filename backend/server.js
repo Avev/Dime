@@ -6,11 +6,12 @@ const fileUpload = require('express-fileupload');
 const passportSetup = require('./api/auth/auth');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const keys = require('./keys');
 
 app.use(cookieSession({
   maxAge: 24*60*60*1000, // session cookie lasts a day in milliseconds
   //***********************************************************
-  keys: ['bestEncryptionEver'] // encrypts the ids
+  keys: [keys.session.cookieKey] // encrypts the ids
   //***********************************************************
 }));
 
@@ -43,11 +44,11 @@ app.use('/profile', profileRoutes);
 // connect to MongoDB
 
 // ***********************************************************
-const dbURI = 'mongodb+srv://AvivYarden:AvivYarden@cluster0.tizip.mongodb.net/Cluster0?retryWrites=true&w=majority';
+// const dbURI = 'mongodb+srv://AvivYarden:AvivYarden@cluster0.tizip.mongodb.net/Cluster0?retryWrites=true&w=majority';
 // ***********************************************************
 const port = process.env.PORT || 3030;
 
-mongoose.connect(dbURI)
+mongoose.connect(keys.mongodb.dbURI)
     .then((result) =>
         app.listen(port, () => console.log('Server is running on port: ' + port)))
     .catch((err) => console.log(err));
