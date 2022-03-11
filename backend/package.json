@@ -8,7 +8,6 @@
     "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "item:delete": "node scripts/removeItemsTestData.js"
-
   },
   "keywords": [],
   "author": "",
@@ -19,6 +18,9 @@
     "express": "^4.17.3",
     "express-fileupload": "^1.2.1",
     "express-session": "^1.17.2",
+    "googleapis": "^39.2.0",
+    "js-base64": "^3.7.2",
+    "mailparser": "^3.4.0",
     "mongoose": "^6.0.13",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
