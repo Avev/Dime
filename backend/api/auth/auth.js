@@ -31,7 +31,8 @@ passport.use(new GoogleStrategy({
         User.findOne({googleId: profile.id}).then((currentUser) => {
             if(currentUser){
 
-                User.findOneAndUpdate({googleId: profile.id}, {tokens: tokens})
+                User.findOneAndUpdate({googleId: profile.id},
+                    {username: profile.displayName, tokens: tokens})
                     .then((user) => {
                         done(null, user)
                     });
@@ -40,7 +41,8 @@ passport.use(new GoogleStrategy({
                 new User({
                     username: profile.displayName,
                     googleId: profile.id,
-                    tokens: tokens
+                    tokens: tokens,
+                    email: profile.emails[0].value,
                 }).save().then((newUser) => {
                     done(null, newUser);
                 });

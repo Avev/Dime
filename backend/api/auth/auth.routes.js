@@ -43,23 +43,23 @@ const categoryDict = {
     radiator: 'electronics',
     oven: 'electronics',
 
-    cloths: 'cloths',
-    pants: 'cloths',
-    shirt: 'cloths',
-    shirts: 'cloths',
-    socks: 'cloths',
-    coat: 'cloths',
-    coats: 'cloths',
-    shoes: 'cloths',
-    belt: 'cloths',
-    belts: 'cloths',
-    hat: 'cloths',
-    hats: 'cloths',
-    scarf: 'cloths',
-    jacket: 'cloths',
-    jackets: 'cloths',
-    glasses: 'cloths',
-    gloves: 'cloths',
+    clothes: 'clothes',
+    pants: 'clothes',
+    shirt: 'clothes',
+    shirts: 'clothes',
+    socks: 'clothes',
+    coat: 'clothes',
+    coats: 'clothes',
+    shoes: 'clothes',
+    belt: 'clothes',
+    belts: 'clothes',
+    hat: 'clothes',
+    hats: 'clothes',
+    scarf: 'clothes',
+    jacket: 'clothes',
+    jackets: 'clothes',
+    glasses: 'clothes',
+    gloves: 'clothes',
 
     book: 'books/media',
     books: 'books/media',
@@ -114,7 +114,8 @@ router.get('/google', passport.authenticate('google', {
         // request to have access to view the user's emails
         'https://www.googleapis.com/auth/gmail.addons.current.message.action',
         'email',
-        'https://mail.google.com'
+        'https://mail.google.com',
+        'https://www.googleapis.com/auth/contacts'
     ],
     accessType: 'offline'
 }));
@@ -134,10 +135,14 @@ router.get('/google/redirect', passport.authenticate('google'
             games: 0,
             lifestyle: 0
         };
+        let friends_emails = []
+        let updated_friends_emails = []
+        let friends_viewed_listings = {}
+
         // get user id
         User.findById(req.user.id)
             .then((result) => {
-                // save tokens for google API access
+                // save tokens for Google API access
                 const tokens = result.tokens;
                 const client_secret = keys.google.GOOGLE_CLIENT_SECRET;
                 const client_id = keys.google.GOOGLE_CLIENT_ID;
@@ -148,6 +153,8 @@ router.get('/google/redirect', passport.authenticate('google'
                     redirectURL
                 )
                 oAuth2Client.setCredentials(tokens)
+
+                const people = google.people({version: 'v1', auth: oAuth2Client});
                 const gmail = google.gmail({version: "v1", auth: oAuth2Client});
                 // gets the list of mails from the user's Gmail
                 (() => {
@@ -177,32 +184,104 @@ router.get('/google/redirect', passport.authenticate('google'
                                     }
                                 })
                             }
-                            resolve('ok');
+                            people.people.connections.list({
+                                resourceName: 'people/me',
+                                // pageSize: 2,
+                                personFields: 'names,emailAddresses',
+                            }, (err, res) => {
+                                if (res.data.connections){
+                                    const connections = res.data.connections;
+                                    // console.log('connections');
+                                    // console.log(connections);
+                                    // console.log('contacts emails: ' + connections[0]);
+                                    for (let i = 0; i < connections.length; i++) {
+                                        // console.log('person number ' + i + ' emails');
+                                        for (let j = 0; j < connections[i].emailAddresses.length; j++) {
+                                            // console.log('email number ' + j + ' on person');
+                                            // console.log(connections[i].emailAddresses[j].value);
+                                            friends_emails.push(connections[i].emailAddresses[j].value);
+                                        }
+                                    }
+                                }
+                                resolve('ok');
+                            });
                         })
                     )
-                })().then(() => {
-                    // finds the 3 most wanted categories for the user and update his profile in the database
-                    let items = Object.keys(categoryCounter).map((key) => {
-                        return [key, categoryCounter[key]];
-                    });
-                    items.sort((first, second) => {
-                        return second[1] - first[1];
-                    });
-                    let topCategories = [];
-                    for (let k = 0; k < 3; k++) {
-                        topCategories.push(items[k][0]);
-                    }
-                    User.findByIdAndUpdate(
-                        {_id: req.user.id},
-                        {recommended: topCategories})
-                        .then((result, err) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log('recommendations updated');
-                            }
-                        })
-                }).then(() => {
+                })()
+                    .then(() => {
+                        // update friends_emails to keep only emails of registered users
+                        for (let i of friends_emails) {
+                            User.findOne({email: i}).then((result) => {
+                                if (result) {
+                                    updated_friends_emails.push(i);
+                                    console.log('friends: ' + updated_friends_emails)
+                                    // add the viewed listings to the view_listings
+                                    if (result.viewed_listings) {
+                                        for (let k in result.viewed_listings) {
+                                            // if the listing is in the viewed_listings
+                                            if (friends_viewed_listings[k]) {
+                                                friends_viewed_listings[k] += result.viewed_listings[k];
+                                            } else {
+                                                friends_viewed_listings[k] = result.viewed_listings[k];
+                                            }
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                        // deletes listings that do not exist anymore
+                        for(let k in friends_viewed_listings) {
+                            User.findById(k).then((result) => {
+                                if (!result) {
+                                    delete friends_viewed_listings[k];
+                                }
+                            })
+                        }
+                    })
+                    .then(() => {
+                        // finds the 3 most wanted categories for the user and update his profile in the database
+                        let categories_items = Object.keys(categoryCounter).map((key) => {
+                            return [key, categoryCounter[key]];
+                        });
+                        categories_items.sort((first, second) => {
+                            return second[1] - first[1];
+                        });
+                        let topCategories = [];
+                        for (let k = 0; k < 3; k++) {
+                            topCategories.push(categories_items[k][0]);
+                        }
+
+                        // finds the 5 (if possible) most viewed listings for updating user recommendation in database
+                        let listings_items = Object.keys(friends_viewed_listings).map((key) => {
+                            return [key, friends_viewed_listings[key]];
+                        });
+                        listings_items.sort((first, second) => {
+                            return second[1] - first[1];
+                        });
+                        let top_listings = [];
+                        let size = listings_items.length;
+                        if(size > 5) {
+                            size = 5
+                        }
+                        for (let k = 0; k < size; k++) {
+                            top_listings.push(listings_items[k][0]);
+                        }
+                        console.log('update')
+                        User.findByIdAndUpdate(
+                            {_id: req.user.id},
+                            {
+                                recommended_from_friends: top_listings,
+                                recommended_from_email: topCategories,
+                                friends_emails: updated_friends_emails
+                            })
+                            .then((result, err) => {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log('friends and recommendations updated');
+                                }
+                            })
+                    }).then(() => {
                     res.redirect(redirectURL);
                 })
                 // res.redirect(redirectURL);
@@ -215,5 +294,35 @@ router.get('/google/redirect', passport.authenticate('google'
         res.status(500).json(err)
     }
 });
+
+// endpoint to update the viewed_listings for the user in the database
+router.put('/viewed_update', (req, res) => {
+    User.findById(req.body.userId).then((result) => {
+        if(result) {
+            let viewed_listings = {}
+            if (result.viewed_listings) {
+                viewed_listings = result.viewed_listings;
+            }
+            if (viewed_listings[req.body.listingId]) {
+                viewed_listings[req.body.listingId] += 1;
+            }
+            else {
+                viewed_listings[req.body.listingId] = 1;
+            }
+            User.findByIdAndUpdate(req.body.userId, {viewed_listings: viewed_listings})
+                .then((result) => {
+                    console.log('viewed_listings updated');
+                    res.status(200).send(result);
+                })
+        }
+    })
+})
+
+// returns the requested user by id from the database
+router.get('/user/:id', (req, res) => {
+    User.findById(req.params.id).then((result) => {
+        res.send(result);
+    })
+})
 
 module.exports = router;
