@@ -7,6 +7,7 @@ export const itemService = {
   querySortByLocation,
   add,
   uploadItemImage,
+  deleteItem
 };
 
 const BASE_URL = 'api/item';
@@ -46,6 +47,10 @@ async function add(item) {
     },
   });
   return res.data;
+}
+
+async function deleteItem(itemId) {
+  await axios.delete(`http://localhost:3030/${BASE_URL}/${itemId}`);
 }
 
 async function uploadItemImage(imageFormData) {

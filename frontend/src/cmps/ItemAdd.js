@@ -64,19 +64,21 @@ export default function ItemAdd(user) {
   };
 
   const handleClickLogin = () => {
-    window.open('http://localhost:3030/auth/google', '_self')
-  }
+    window.open('http://localhost:3030/auth/google', '_self');
+  };
 
   return (
     <div>
-      <Button variant='contained' color='secondary' onClick={() => {
-      if (user.user) {
-        handleClickOpen();
-      }
-      else {
-        handleClickLogin();
-      }
-      }}>
+      <Button
+        variant='contained'
+        color='secondary'
+        onClick={() => {
+          if (user.user) {
+            handleClickOpen();
+          } else {
+            handleClickLogin();
+          }
+        }}>
         Add item
       </Button>
       <Dialog className={classes.dialog} open={open} onClose={handleClose}>

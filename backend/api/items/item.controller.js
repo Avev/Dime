@@ -66,17 +66,18 @@ const getItemsByCategory = (req, res) => {
 const getItemsByUserId = (req, res) => {
   const userId = req.params.userId;
   ItemServices.find({ userId: userId })
-      .then((result) => {
-        res.json(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // adding a listing
 const addItem = (req, res) => {
   const listing = new ItemServices(JSON.parse(req.body.document));
+  console.log('item: ', req.body.document);
   if (req.files) {
     const imageUploadFile = req.files.image;
     const newImageName = Date.now() + imageUploadFile.name;
@@ -153,7 +154,7 @@ const updateItem = (req, res) => {
 };
 
 function _buildCriteria(filterBy) {
-  let { txt, category, location, price } = filterBy;
+  let { txt, category, location, price, userId } = filterBy;
   let criteria = {};
   if (price) {
     filterBy.price = JSON.parse(filterBy.price);
@@ -170,6 +171,9 @@ function _buildCriteria(filterBy) {
   }
   if (location) {
     criteria.location = location;
+  }
+  if (userId) {
+    criteria.userId = userId;
   }
   return criteria;
 }
