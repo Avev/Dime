@@ -1,12 +1,10 @@
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-
-import React, { useEffect, useState } from 'react';
-import ItemDetails from '../cmps/ItemDetails';
+import { Redirect } from 'react-router-dom';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { PageContainer } from '../cmps/layout-cmps/PageContainer';
 import UserItemList from '../cmps/UserItemList';
 import { itemService } from '../services/itemService';
-import { userService } from '../services/userService';
 
 const UserProfile = ({ user }) => {
   const [userItems, setUserItems] = useState([]);
@@ -28,6 +26,8 @@ const UserProfile = ({ user }) => {
   return (
     <PageContainer>
       <Title username={user?.username} />
+
+      <UserItemTitle />
       {!!userItems.length && (
         <UserItemList items={userItems} onDeleteItem={onDeleteItem} />
       )}
@@ -42,11 +42,15 @@ const Title = ({ username }) => {
     <Typography
       variant='h4'
       sx={{
-        marginBottom: '20px',
+        marginBottom: '40px',
         borderBottom: `1px solid ${theme.palette.secondary.main}`,
       }}>
       Hello, {username}
     </Typography>
   );
+};
+
+const UserItemTitle = () => {
+  return <Typography variant='h5' sx={{marginBottom: '15px'}}>Items you posted:</Typography>;
 };
 export default UserProfile;

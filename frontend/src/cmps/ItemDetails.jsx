@@ -4,7 +4,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import * as path from 'path';
-
+import { authService } from '../services/authService';
+import { useContext } from 'react';
+import { UserContext } from '../lib/context/UserContext';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -19,7 +21,17 @@ const style = {
 
 export default function ItemDetails({ item }) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const { user } = useContext(UserContext);
+
+  const handleOpen = () => {
+    setOpen(true);
+    if (user) {
+      authService.updateViewedListings({
+        userId: user._id,
+        listingId: item._id,
+      });
+    }
+  };
   const handleClose = () => setOpen(false);
 
   return (

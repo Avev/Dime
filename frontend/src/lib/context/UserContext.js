@@ -1,25 +1,14 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { createContext } from 'react';
-import { userService } from '../../services/userService';
-
 export const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    if (!user) {
-      const user = await userService.getLoggedInUser();
-      setUser(user);
-    } else {
-        
-    }
-  };
-
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 };

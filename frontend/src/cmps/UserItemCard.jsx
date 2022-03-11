@@ -9,7 +9,7 @@ import ItemDetails from './ItemDetails';
 
 export default function UserItemCard({ item, onDeleteItem }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ minWidth: 300 }}>
       <CardMedia
         component='img'
         height='140'

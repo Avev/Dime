@@ -3,7 +3,14 @@ import UserItemCard from './UserItemCard';
 
 const UserItemList = ({ items, onDeleteItem }) => {
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+    <Stack
+      sx={{
+        flexDirection: 'row',
+        gap: '20px',
+        width: '100%',
+        overflowX: 'scroll',
+        
+      }}>
       {items.map((item) => (
         <UserItemCard
           key={item._id}

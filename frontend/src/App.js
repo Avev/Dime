@@ -5,10 +5,10 @@ import HomePage from './views/HomePage';
 import { createTheme, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useContext, useMemo, useState } from 'react';
 import { ColorModeContext } from './lib/context/ColorModeContext';
 import UserProfile from './views/UserProfile';
-import { UserProvider } from './lib/context/UserContext';
+import { UserContext } from './lib/context/UserContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 });
 function App() {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
   const [mode, setMode] = useState('light');
 
   useEffect(() => {

@@ -20,7 +20,6 @@ import ItemAdd from './ItemAdd';
 import classes from '../assets/styles/cmps/AppHeader.module.css';
 import LoginButton from './LoginButton';
 // const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const pages = {
   headerLinks: [
     {
@@ -40,10 +39,12 @@ const pages = {
     {
       name: 'Profile',
       to: '/profile',
+      isRequiredAuth: true,
     },
     {
       name: 'Account',
       to: '/account',
+      isRequiredAuth: true,
     },
     {
       name: 'Dashboard',
@@ -73,7 +74,12 @@ const ResponsiveAppBar = (user) => {
   };
 
   const handleCloseNavMenu = (route) => {
-    history.push(`${route}`);
+    console.log({ route });
+    if (route.isRequiredAuth && !user?.user) {
+      redirectToLogin();
+    } else {
+      history.push(`${route.to}`);
+    }
     setAnchorElNav(null);
   };
 
@@ -86,6 +92,9 @@ const ResponsiveAppBar = (user) => {
     setAnchorElNav(null);
   };
 
+  const redirectToLogin = () => {
+    window.open('http://localhost:3030/auth/google', '_self');
+  };
   return (
     <AppBar
       className={classes.appBar}
@@ -153,7 +162,7 @@ const ResponsiveAppBar = (user) => {
               </Button>
             ))}
           </Box>
-          <LoginButton user={user.user}/>
+          <LoginButton user={user.user} />
           <ItemAdd user={user.user} />
           <IconButton
             sx={{ ml: 1 }}
@@ -185,13 +194,12 @@ const ResponsiveAppBar = (user) => {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-              >
-              {pages.menuLinks.map((setting) => (
+              onClose={handleCloseUserMenu}>
+              {pages.menuLinks.map((route) => (
                 <MenuItem
-                  key={setting.name}
-                  onClick={() => handleCloseNavMenu(setting.to)}>
-                  <Typography textAlign='center'>{setting.name}</Typography>
+                  key={route.name}
+                  onClick={() => handleCloseNavMenu(route)}>
+                  <Typography textAlign='center'>{route.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
