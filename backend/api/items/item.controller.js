@@ -1,7 +1,7 @@
 const ItemServices = require('./item.service');
 const fs = require('fs');
 const IMAGE_UPLOAD_PATH = require('../../lib/imageUploadPath');
-
+const mongoose = require('mongoose')
 // show all the listings
 const getItems = (req, res) => {
   const filterBy = req.query;
@@ -154,8 +154,15 @@ const updateItem = (req, res) => {
 };
 
 function _buildCriteria(filterBy) {
-  let { txt, category, location, price, userId } = filterBy;
+  let { txt, category, location, price, userId, itemIds } = filterBy;
   let criteria = {};
+
+  if (itemIds) {
+    criteria._id = {
+      $in: itemIds.map((itemId)=>mongoose.Types.ObjectId(itemId))
+    }
+  }
+
   if (price) {
     filterBy.price = JSON.parse(filterBy.price);
   }

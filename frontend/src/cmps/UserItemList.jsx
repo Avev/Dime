@@ -9,13 +9,12 @@ const UserItemList = ({ items, onDeleteItem }) => {
         gap: '20px',
         width: '100%',
         overflowX: 'scroll',
-        
       }}>
       {items.map((item) => (
         <UserItemCard
           key={item._id}
           item={item}
-          onDeleteItem={() => onDeleteItem(item._id)}
+          onDeleteItem={onDeleteItem}
         />
       ))}
     </Stack>

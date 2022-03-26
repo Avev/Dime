@@ -25,9 +25,9 @@ export default function UserItemCard({ item, onDeleteItem }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small' onClick={onDeleteItem}>
+        {onDeleteItem && <Button size='small' onClick={() => { onDeleteItem(item._id) }}>
           Delete
-        </Button>
+        </Button>}
         <ItemDetails item={item} />
       </CardActions>
     </Card>
