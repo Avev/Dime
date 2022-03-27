@@ -9,90 +9,90 @@ const {request} = require("express");
 
 const redirectURL = 'http://localhost:3000'
 
-const categoryDict = {
-    furniture: 'furniture',
-    table: 'furniture',
-    desk: 'furniture',
-    chair: 'furniture',
-    bed: 'furniture',
-    sofa: 'furniture',
-    closet: 'furniture',
-    shelf: 'furniture',
-    mattress: 'furniture',
-
-    electronics: 'electronics',
-    computer: 'electronics',
-    pc: 'electronics',
-    lamp: 'electronics',
-    ssd: 'electronics',
-    hdd: 'electronics',
-    gpu: 'electronics',
-    cpu: 'electronics',
-    case: 'electronics',
-    phone: 'electronics',
-    telephone: 'electronics',
-    screen: 'electronics',
-    monitor: 'electronics',
-    keyboard: 'electronics',
-    mouse: 'electronics',
-    toaster: 'electronics',
-    machine: 'electronics',
-    printer: 'electronics',
-    fax: 'electronics',
-    console: 'electronics',
-    calculator: 'electronics',
-    clock: 'electronics',
-    radiator: 'electronics',
-    oven: 'electronics',
-
-    clothes: 'clothes',
-    pants: 'clothes',
-    shirt: 'clothes',
-    shirts: 'clothes',
-    socks: 'clothes',
-    coat: 'clothes',
-    coats: 'clothes',
-    shoes: 'clothes',
-    belt: 'clothes',
-    belts: 'clothes',
-    hat: 'clothes',
-    hats: 'clothes',
-    scarf: 'clothes',
-    jacket: 'clothes',
-    jackets: 'clothes',
-    glasses: 'clothes',
-    gloves: 'clothes',
-
-    book: 'books/media',
-    books: 'books/media',
-    media: 'books/media',
-    music: 'books/media',
-    novel: 'books/media',
-
-    sport: 'sports',
-    sports: 'sports',
-    weight: 'sports',
-    weights: 'sports',
-    dumbbell: 'sports',
-    dumbbells: 'sports',
-    ball: 'sports',
-    balls: 'sports',
-    training: 'sports',
-    bottle: 'lifestyle',
-    bottles: 'lifestyle',
-
-    game: 'games',
-    games: 'games',
-    tabletop: 'games',
-
-    lifestyle: 'lifestyle',
-    lifestyles: 'lifestyle',
-    cream: 'lifestyle',
-    spray: 'lifestyle',
-    makeup: 'lifestyle',
-    mascara: 'lifestyle',
-    eyeliner: 'lifestyle',
-}
+// const categoryDict = {
+//     furniture: 'furniture',
+//     table: 'furniture',
+//     desk: 'furniture',
+//     chair: 'furniture',
+//     bed: 'furniture',
+//     sofa: 'furniture',
+//     closet: 'furniture',
+//     shelf: 'furniture',
+//     mattress: 'furniture',
+//
+//     electronics: 'electronics',
+//     speakers: 'electronics',
+//     computer: 'electronics',
+//     lamp: 'electronics',
+//     ssd: 'electronics',
+//     hdd: 'electronics',
+//     gpu: 'electronics',
+//     cpu: 'electronics',
+//     case: 'electronics',
+//     phone: 'electronics',
+//     telephone: 'electronics',
+//     screen: 'electronics',
+//     monitor: 'electronics',
+//     keyboard: 'electronics',
+//     mouse: 'electronics',
+//     toaster: 'electronics',
+//     machine: 'electronics',
+//     printer: 'electronics',
+//     fax: 'electronics',
+//     console: 'electronics',
+//     calculator: 'electronics',
+//     clock: 'electronics',
+//     radiator: 'electronics',
+//     oven: 'electronics',
+//
+//     clothes: 'clothes',
+//     pants: 'clothes',
+//     shirt: 'clothes',
+//     shirts: 'clothes',
+//     socks: 'clothes',
+//     coat: 'clothes',
+//     coats: 'clothes',
+//     shoes: 'clothes',
+//     belt: 'clothes',
+//     belts: 'clothes',
+//     hat: 'clothes',
+//     hats: 'clothes',
+//     scarf: 'clothes',
+//     jacket: 'clothes',
+//     jackets: 'clothes',
+//     glasses: 'clothes',
+//     gloves: 'clothes',
+//
+//     book: 'books/media',
+//     books: 'books/media',
+//     media: 'books/media',
+//     music: 'books/media',
+//     novel: 'books/media',
+//
+//     sport: 'sports',
+//     sports: 'sports',
+//     weight: 'sports',
+//     weights: 'sports',
+//     dumbbell: 'sports',
+//     dumbbells: 'sports',
+//     ball: 'sports',
+//     balls: 'sports',
+//     training: 'sports',
+//     bottle: 'lifestyle',
+//     bottles: 'lifestyle',
+//
+//     game: 'games',
+//     games: 'games',
+//     tabletop: 'games',
+//
+//     lifestyle: 'lifestyle',
+//     lifestyles: 'lifestyle',
+//     cream: 'lifestyle',
+//     spray: 'lifestyle',
+//     makeup: 'lifestyle',
+//     mascara: 'lifestyle',
+//     eyeliner: 'lifestyle',
+// }
 
 // endpoint for checking if the user is logged and if so to get it
 router.get('/login/success', (req, res) => {
@@ -137,12 +137,98 @@ router.get('/google/redirect', passport.authenticate('google'
             games: 0,
             lifestyle: 0
         };
-        let friends_emails = []
-        let updated_friends_emails = []
-        let friends_viewed_listings = {}
+
+        let keywordCounter = {
+            furniture: 0,
+            table: 0,
+            desk: 0,
+            chair: 0,
+            bed: 0,
+            sofa: 0,
+            closet: 0,
+            shelf: 0,
+            mattress: 0,
+
+            electronics: 0,
+            speakers: 0,
+            computer: 0,
+            lamp: 0,
+            ssd: 0,
+            hdd: 0,
+            gpu: 0,
+            cpu: 0,
+            case: 0,
+            phone: 0,
+            telephone: 0,
+            screen: 0,
+            monitor: 0,
+            keyboard: 0,
+            mouse: 0,
+            toaster: 0,
+            machine: 0,
+            printer: 0,
+            fax: 0,
+            console: 0,
+            calculator: 0,
+            clock: 0,
+            radiator: 0,
+            oven: 0,
+
+            clothes: 0,
+            pants: 0,
+            shirt: 0,
+            shirts: 0,
+            socks: 0,
+            coat: 0,
+            coats: 0,
+            shoes: 0,
+            belt: 0,
+            belts: 0,
+            hat: 0,
+            hats: 0,
+            scarf: 0,
+            jacket: 0,
+            jackets: 0,
+            glasses: 0,
+            gloves: 0,
+
+            book: 0,
+            books: 0,
+            media: 0,
+            music: 0,
+            novel: 0,
+
+            sport: 0,
+            sports: 0,
+            weight: 0,
+            weights: 0,
+            dumbbell: 0,
+            dumbbells: 0,
+            ball: 0,
+            balls: 0,
+            training: 0,
+            bottle: 0,
+            bottles: 0,
+
+            game: 0,
+            games: 0,
+            tabletop: 0,
+
+            lifestyle: 0,
+            lifestyles: 0,
+            cream: 0,
+            spray: 0,
+            makeup: 0,
+            mascara: 0,
+            eyeliner: 0,
+        }
+        let friends_emails = [];
+        let updated_friends_emails = [];
+        let friends_viewed_listings = {};
+        let friends_listings = [];
 
         // get user id
-        let result = await User.findById(req.user.id)
+        let result = await User.findById(req.user.id);
         const tokens = result.tokens;
         const client_secret = keys.google.GOOGLE_CLIENT_SECRET;
         const client_id = keys.google.GOOGLE_CLIENT_ID;
@@ -158,7 +244,9 @@ router.get('/google/redirect', passport.authenticate('google'
         const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
         // gets the list of mails from the user's Gmail
         let gmail_list_result = new Promise((resolve, reject) => {
-            gmail.users.messages.list({userId: req.user.googleId}, async (err, result) => {
+            gmail.users.messages.list(
+                {userId: req.user.googleId, q: 'category:promotions'},
+                async (err, result) => {
                 if (err) {
                     reject(err);
                 }
@@ -168,7 +256,7 @@ router.get('/google/redirect', passport.authenticate('google'
                 if (messages_length < mail_iterations) {
                     mail_iterations = messages_length;
                 }
-                let promise_list = []
+                let promise_list = [];
                 for (let i = 0; i < mail_iterations; i++) {
                     // get a specific mail by its id
                     promise_list.push(new Promise((resolve, reject) => {
@@ -181,9 +269,14 @@ router.get('/google/redirect', passport.authenticate('google'
                             }
                             let title = res.data.payload.headers.find(x => x.name === 'Subject').value;
                             let lower_case_title = title.toLowerCase();
-                            for (let k in categoryDict) {
+                            // for (let k in categoryDict) {
+                            //     if (lower_case_title.includes(k)) {
+                            //         categoryCounter[categoryDict[k]] += 1;
+                            //     }
+                            // }
+                            for (let k in keywordCounter) {
                                 if (lower_case_title.includes(k)) {
-                                    categoryCounter[categoryDict[k]] += 1;
+                                    keywordCounter[k] += 1;
                                 }
                             }
                             resolve();
@@ -217,6 +310,11 @@ router.get('/google/redirect', passport.authenticate('google'
         for (let i of friends_emails) {
             result = await User.findOne({email: i})
             if (result) {
+                let user_listings = await ItemServices.find({userId: result.id});
+                for (let j of user_listings) {
+                    friends_listings.push(j.id);
+                }
+
                 updated_friends_emails.push(i);
                 console.log('friends: ' + updated_friends_emails);
                 // add the viewed listings to the friends_viewed_listings
@@ -241,15 +339,37 @@ router.get('/google/redirect', passport.authenticate('google'
             }
         }
         // finds the 3 most wanted categories for the user and updates his profile in the database
-        let categories_items = Object.keys(categoryCounter).map((key) => {
-            return [key, categoryCounter[key]];
+        // let categories_items = Object.keys(categoryCounter).map((key) => {
+        //     return [key, categoryCounter[key]];
+        // });
+        // categories_items.sort((first, second) => {
+        //     return second[1] - first[1];
+        // });
+        // let top_categories = [];
+        // for (let k=0; k < 3; k++) {
+        //     top_categories.push(categories_items[k][0]);
+        // }
+
+        // finds the 5 most wanted keywords that have listings for them in the db
+        let keywords_items = Object.keys(keywordCounter).map((key) => {
+            return [key, keywordCounter[key]];
         });
-        categories_items.sort((first, second) => {
+        keywords_items.sort((first, second) => {
             return second[1] - first[1];
         });
-        let top_categories = [];
-        for (let k=0; k < 3; k++) {
-            top_categories.push(categories_items[k][0]);
+        let top_keywords_listings = [];
+        result = await ItemServices.find();
+        for (let k=0; k < keywords_items.length; k++) {
+            for (let i = 0; i < result.length; i++) {
+                let lower_case_title = result[i].title.toLowerCase();
+                if (lower_case_title.includes(keywords_items[k][0])) {
+                    top_keywords_listings.push(result[i].id);
+                    break;
+                }
+            }
+            if (top_keywords_listings.length === 5) {
+                break;
+            }
         }
 
         // finds the 5 (if possible) most viewed listings for updating user recommendations in database
@@ -284,8 +404,9 @@ router.get('/google/redirect', passport.authenticate('google'
             {_id: req.user.id},
             {
                 viewed_listings: user_viewed_listings,
+                friends_listings: friends_listings,
                 recommended_from_friends: top_listings,
-                recommended_from_email: top_categories,
+                recommended_from_email: top_keywords_listings,
                 friends_emails: updated_friends_emails
             }
         )

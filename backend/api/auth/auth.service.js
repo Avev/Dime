@@ -6,6 +6,7 @@ const userSchema = new Schema({
     googleId: String,
     email: String,
     friends_emails: [],
+    friends_listings: [],
     recommended_from_friends: [],
     recommended_from_email: [],
     viewed_listings: Object,
