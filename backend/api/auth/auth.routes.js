@@ -250,40 +250,42 @@ router.get('/google/redirect', passport.authenticate('google'
                 if (err) {
                     reject(err);
                 }
-                // iterates on the last 30 messages or fewer if there are fewer messages
-                let messages_length = result.data.messages.length;
-                let mail_iterations = 30;
-                if (messages_length < mail_iterations) {
-                    mail_iterations = messages_length;
-                }
-                let promise_list = [];
-                for (let i = 0; i < mail_iterations; i++) {
-                    // get a specific mail by its id
-                    promise_list.push(new Promise((resolve, reject) => {
-                        gmail.users.messages.get({
-                            userId: req.user.googleId,
-                            id: result.data.messages[i].id
-                        }, (err, res) => {
-                            if (err) {
-                                reject(err);
-                            }
-                            let title = res.data.payload.headers.find(x => x.name === 'Subject').value;
-                            let lower_case_title = title.toLowerCase();
-                            // for (let k in categoryDict) {
-                            //     if (lower_case_title.includes(k)) {
-                            //         categoryCounter[categoryDict[k]] += 1;
-                            //     }
-                            // }
-                            for (let k in keywordCounter) {
-                                if (lower_case_title.includes(k)) {
-                                    keywordCounter[k] += 1;
+                if (result.data.resultSizeEstimate > 0) {
+                    // iterates on the last 30 messages or fewer if there are fewer messages
+                    let messages_length = result.data.messages.length;
+                    let mail_iterations = 30;
+                    if (messages_length < mail_iterations) {
+                        mail_iterations = messages_length;
+                    }
+                    let promise_list = [];
+                    for (let i = 0; i < mail_iterations; i++) {
+                        // get a specific mail by its id
+                        promise_list.push(new Promise((resolve, reject) => {
+                            gmail.users.messages.get({
+                                userId: req.user.googleId,
+                                id: result.data.messages[i].id
+                            }, (err, res) => {
+                                if (err) {
+                                    reject(err);
                                 }
-                            }
-                            resolve();
-                        })
-                    }))
+                                let title = res.data.payload.headers.find(x => x.name === 'Subject').value;
+                                let lower_case_title = title.toLowerCase();
+                                // for (let k in categoryDict) {
+                                //     if (lower_case_title.includes(k)) {
+                                //         categoryCounter[categoryDict[k]] += 1;
+                                //     }
+                                // }
+                                for (let k in keywordCounter) {
+                                    if (lower_case_title.includes(k)) {
+                                        keywordCounter[k] += 1;
+                                    }
+                                }
+                                resolve();
+                            })
+                        }))
+                    }
+                    await Promise.all(promise_list);
                 }
-                await Promise.all(promise_list);
                 resolve();
             })
         })
@@ -399,11 +401,64 @@ router.get('/google/redirect', passport.authenticate('google'
                 }
             }
         }
+        // get the top 5 viewed listings from the user
+        let user_viewed_listings_items = Object.keys(user_viewed_listings).map((key) => {
+            return [key, user_viewed_listings[key]];
+        });
+        user_viewed_listings_items.sort((first, second) => {
+            return second[1] - first[1];
+        });
+        let top_viewed_listings = [];
+        for (let k=0; k < 5; k++) {
+            top_viewed_listings.push(user_viewed_listings_items[k][0]);
+        }
+
+        // add random listings to the lists that are not full
+        result = await ItemServices.find();
+        if (result) {
+            let listings_ids = [];
+            for (let i = 0; i < result.length; i++) {
+                listings_ids.push(result[i].id);
+            }
+            size = 5
+            if (listings_ids.length < size) {
+                size = listings_ids.length;
+            }
+            let shuffled_listings_ids = listings_ids.slice();
+            shuffled_listings_ids = shuffled_listings_ids.sort(() => Math.random() - 0.5);
+            let idx = 0;
+            while (top_viewed_listings.length < size) {
+                let random = shuffled_listings_ids[idx];
+                if (!top_viewed_listings.includes(random)) {
+                    top_viewed_listings.push(random);
+                }
+                idx += 1;
+            }
+            shuffled_listings_ids = shuffled_listings_ids.sort(() => Math.random() - 0.5);
+            idx = 0
+            while (top_listings.length < size) {
+                let random = shuffled_listings_ids[idx];
+                if (!top_listings.includes(random)) {
+                    top_listings.push(random);
+                }
+                idx += 1;
+            }
+            shuffled_listings_ids = shuffled_listings_ids.sort(() => Math.random() - 0.5);
+            idx = 0;
+            while (top_keywords_listings.length < size) {
+                let random = shuffled_listings_ids[idx];
+                if (!top_keywords_listings.includes(random)) {
+                    top_keywords_listings.push(random);
+                }
+                idx += 1;
+            }
+        }
         console.log('update');
         result = await User.findByIdAndUpdate(
             {_id: req.user.id},
             {
                 viewed_listings: user_viewed_listings,
+                recommended_from_viewed_listings: top_viewed_listings,
                 friends_listings: friends_listings,
                 recommended_from_friends: top_listings,
                 recommended_from_email: top_keywords_listings,

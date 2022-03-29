@@ -9,6 +9,7 @@ const userSchema = new Schema({
     friends_listings: [],
     recommended_from_friends: [],
     recommended_from_email: [],
+    recommended_from_viewed_listings: [],
     viewed_listings: Object,
     tokens: Object
 });
