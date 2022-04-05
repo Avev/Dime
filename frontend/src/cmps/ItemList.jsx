@@ -7,6 +7,16 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { utilService } from '../services/utilService';
 import ItemDetails from './ItemDetails';
+import {
+    FacebookShareButton,
+    FacebookIcon,
+    WhatsappShareButton,
+    WhatsappIcon,
+    TwitterShareButton,
+    TwitterIcon,
+    TelegramShareButton,
+    TelegramIcon,
+} from "react-share";
 
 const ItemList = ({ items }) => {
   return (
@@ -52,6 +62,34 @@ function ActionAreaCard({ item }) {
               {/*Lizards are a widespread group of squamate reptiles, with over 6,000*/}
               {/*species, ranging across all continents except Antarctica*/}
             </Typography>
+              <FacebookShareButton
+                  url='http://localhost:3000/item'
+                  quote={'Hey check out: ' + item.title + ' at Dime website'}
+              >
+                  <FacebookIcon size={40} logoFillColor='white' round={true}></FacebookIcon>
+              </FacebookShareButton>
+
+              <TwitterShareButton
+                  url='http://localhost:3000/item'
+                  title={'Hey check out: ' + item.title + ' at Dime website'}
+              >
+                  <TwitterIcon size={40} logoFillColor='white' round={true}></TwitterIcon>
+              </TwitterShareButton>
+
+              <WhatsappShareButton
+                  url='http://localhost:3000/item'
+                  title={'Hey check out: ' + item.title + ' at Dime website'}
+                  >
+                  <WhatsappIcon size={40} logoFillColor='white' round={true}></WhatsappIcon>
+              </WhatsappShareButton>
+
+              <TelegramShareButton
+                  url='http://localhost:3000/item'
+                  title={'Hey check out: ' + item.title + ' at Dime website'}
+              >
+                  <TelegramIcon size={40} logoFillColor='white' round={true}></TelegramIcon>
+              </TelegramShareButton>
+
           </CardContent>
           <CardMedia
             component='img'

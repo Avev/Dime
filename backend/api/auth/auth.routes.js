@@ -151,6 +151,9 @@ router.get('/google/redirect', passport.authenticate('google'
 
             electronics: 0,
             speakers: 0,
+            headphones: 0,
+            headset: 0,
+            earphones: 0,
             computer: 0,
             lamp: 0,
             ssd: 0,
