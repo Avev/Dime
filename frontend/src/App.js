@@ -2,6 +2,7 @@ import AppHeader from './cmps/AppHeader';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ItemApp from './views/ItemApp';
 import HomePage from './views/HomePage';
+import AboutPage from './views/About';
 import { createTheme, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -68,10 +69,8 @@ function App() {
             <AppHeader user={user} />
             <Switch>
               <Route component={ItemApp} path='/item' />
-              <Route
-                component={() => <UserProfile user={user} />}
-                path='/profile'
-              />
+              <Route component={() => <UserProfile user={user} />} path='/profile' />
+              <Route component={AboutPage} path="/about" />
               <Route component={HomePage} path='/' />
             </Switch>
             {/* <pre>{JSON.stringify(items, null, 2)}</pre> */}

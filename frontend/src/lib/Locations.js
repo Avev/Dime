@@ -11,4 +11,12 @@ export const Locations = {
     value: 'petahTikva',
     label: 'Petah-Tikva',
   },
+  Haifa: {
+    value: 'Haifa',
+    label: 'Haifa',
+  },
+  Jerusalem: {
+    value: 'Jerusalem',
+    label: 'Jerusalem',
+  },
 };

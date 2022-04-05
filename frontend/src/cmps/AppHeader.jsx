@@ -19,12 +19,19 @@ import { ColorModeContext } from '../lib/context/ColorModeContext';
 import ItemAdd from './ItemAdd';
 import classes from '../assets/styles/cmps/AppHeader.module.css';
 import LoginButton from './LoginButton';
+import { Link } from 'react-router-dom';
+
 // const pages = ['Products', 'Pricing', 'Blog'];
 const pages = {
   headerLinks: [
     {
       name: 'Products',
       to: '/item',
+    },
+    {
+      name: 'Profile',
+      to: '/profile',
+      isRequiredAuth: true,
     },
     {
       name: 'About',
@@ -35,26 +42,7 @@ const pages = {
       to: '/contact-us',
     },
   ],
-  menuLinks: [
-    {
-      name: 'Profile',
-      to: '/profile',
-      isRequiredAuth: true,
-    },
-    {
-      name: 'Account',
-      to: '/account',
-      isRequiredAuth: true,
-    },
-    {
-      name: 'Dashboard',
-      to: '/dashboard',
-    },
-    {
-      name: 'Logout',
-      to: '/logout',
-    },
-  ],
+  menuLinks: [],
 };
 
 const ResponsiveAppBar = (user) => {
@@ -87,8 +75,12 @@ const ResponsiveAppBar = (user) => {
     setAnchorElUser(null);
   };
 
-  const handleClickPageLink = (endpoint) => {
-    history.push(endpoint);
+  const handleClickPageLink = (page) => {
+    if (page.isRequiredAuth && !user?.user) {
+      redirectToLogin();
+    } else {
+      history.push(`${page.to}`);
+    }
     setAnchorElNav(null);
   };
 
@@ -104,8 +96,8 @@ const ResponsiveAppBar = (user) => {
           <Typography
             variant='h6'
             noWrap
-            component='div'
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
+            onClick={() => { history.push('/') }}
+            sx={{ mr: 2, cursor: 'pointer', display: { xs: 'none', md: 'flex' } }}>
             Dime
           </Typography>
 
@@ -139,7 +131,7 @@ const ResponsiveAppBar = (user) => {
               {pages.headerLinks.map((page) => (
                 <MenuItem
                   key={page.name}
-                  onClick={() => handleClickPageLink(page.to)}>
+                  onClick={() => handleClickPageLink(page)}>
                   <Typography textAlign='center'>{page.name}</Typography>
                 </MenuItem>
               ))}
@@ -156,7 +148,7 @@ const ResponsiveAppBar = (user) => {
             {pages.headerLinks.map((page) => (
               <Button
                 key={page.name}
-                onClick={() => handleClickPageLink(page.to)}
+                onClick={() => handleClickPageLink(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page.name}
               </Button>
@@ -176,37 +168,17 @@ const ResponsiveAppBar = (user) => {
           </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={() => {
+                handleCloseNavMenu({isRequiredAuth: true, to: '/profile'})
+              }} sx={{ p: 0 }}>
                 <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}>
-              {pages.menuLinks.map((route) => (
-                <MenuItem
-                  key={route.name}
-                  onClick={() => handleCloseNavMenu(route)}>
-                  <Typography textAlign='center'>{route.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 };
+
 export default ResponsiveAppBar;
