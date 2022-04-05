@@ -66,28 +66,28 @@ function ActionAreaCard({ item }) {
                   url='http://localhost:3000/item'
                   quote={'Hey check out: ' + item.title + ' at Dime website'}
               >
-                  <FacebookIcon size={40} logoFillColor='white' round={true}></FacebookIcon>
+                  <FacebookIcon size={30} logoFillColor='white' round={true}></FacebookIcon>
               </FacebookShareButton>
 
               <TwitterShareButton
                   url='http://localhost:3000/item'
                   title={'Hey check out: ' + item.title + ' at Dime website'}
               >
-                  <TwitterIcon size={40} logoFillColor='white' round={true}></TwitterIcon>
+                  <TwitterIcon size={30} logoFillColor='white' round={true}></TwitterIcon>
               </TwitterShareButton>
 
               <WhatsappShareButton
                   url='http://localhost:3000/item'
                   title={'Hey check out: ' + item.title + ' at Dime website'}
                   >
-                  <WhatsappIcon size={40} logoFillColor='white' round={true}></WhatsappIcon>
+                  <WhatsappIcon size={30} logoFillColor='white' round={true}></WhatsappIcon>
               </WhatsappShareButton>
 
               <TelegramShareButton
                   url='http://localhost:3000/item'
                   title={'Hey check out: ' + item.title + ' at Dime website'}
               >
-                  <TelegramIcon size={40} logoFillColor='white' round={true}></TelegramIcon>
+                  <TelegramIcon size={30} logoFillColor='white' round={true}></TelegramIcon>
               </TelegramShareButton>
 
           </CardContent>
