@@ -10,17 +10,12 @@ const ItemApp = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    // if (sortBy === 'date') {
-    //   fetchItemsSortByDate();
-    // } else if (sortBy === 'location') {
-    //   fetchItemsSortByLocation();
-    // } else {
-    //   fetchItems();
-    // }
+    fetchItems();
   }, []);
 
   const fetchItems = async (filterBy, sortBy) => {
     const items = await itemService.query(filterBy, sortBy);
+    console.log('items locations: ', new Set(items.map(i=>i.location)))
     setItems(items);
   };
 

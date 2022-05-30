@@ -2,9 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   debounce,
   TextField,
-  Input,
   Typography,
-  Container,
   useTheme,
   InputLabel,
 } from '@mui/material';
@@ -72,20 +70,6 @@ const ItemFilter = ({ onFilter }) => {
   const handleChange = (ev) => {
     // Object destructuring
     let { name, value, type } = ev.target;
-    if (type === 'number') {
-      value = +value;
-    }
-    // Dynamically change only the relevant property in filterBy state.
-    if (
-      name === ItemFilterFieldNames.Price.From ||
-      name === ItemFilterFieldNames.Price.To
-    ) {
-      value = {
-        ...filter.price,
-        [name]: value,
-      };
-      name = 'price';
-    }
     setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   };
   return (
@@ -115,40 +99,7 @@ const ItemFilter = ({ onFilter }) => {
           onChange={handleChange}
         />
       </Box>
-      {/* <DebugView data={filterBy} /> */}
     </Box>
-  );
-};
-
-const priceFieldProps = {
-  from: {
-    name: ItemFilterFieldNames.Price.From,
-    label: ItemFilterFieldLabels.Price.From,
-    type: 'number',
-  },
-  to: {
-    name: ItemFilterFieldNames.Price.To,
-    label: ItemFilterFieldLabels.Price.To,
-    type: 'number',
-  },
-};
-const PriceField = ({
-  toFieldProps: restOfToFieldProps,
-  fromFieldProps: restOfFromFieldProps,
-}) => {
-  return (
-    <div>
-      <TextField
-        {...baseItemFilterFieldProps}
-        {...priceFieldProps.from}
-        {...restOfFromFieldProps}
-      />
-      <TextField
-        {...baseItemFilterFieldProps}
-        {...priceFieldProps.to}
-        {...restOfToFieldProps}
-      />
-    </div>
   );
 };
 

@@ -4,11 +4,11 @@ export const Locations = {
     label: 'All',
   },
   TelAviv: {
-    value: 'telAviv',
+    value: 'Tel-Aviv',
     label: 'Tel-Aviv',
   },
   PetahTikva: {
-    value: 'petahTikva',
+    value: 'Petah-Tikva',
     label: 'Petah-Tikva',
   },
   Haifa: {
@@ -18,5 +18,25 @@ export const Locations = {
   Jerusalem: {
     value: 'Jerusalem',
     label: 'Jerusalem',
+  },
+  Rehovot: {
+    value: 'Rehovot',
+    label: 'Rehovot',
+  },
+  Akko: {
+    value: 'Akko',
+    label: 'Akko'
+  },
+  BatYam: {
+    value: 'Bat Yam',
+    label: 'Bat Yam'
+  },
+  Eilat: {
+    value: 'Eilat',
+    label: 'Eilat'
+  },
+  RamatHasharon: {
+    value: 'Ramat Hasharon',
+    label: 'Ramat Hasharon'
   },
 };

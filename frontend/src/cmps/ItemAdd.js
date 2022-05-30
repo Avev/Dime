@@ -12,11 +12,14 @@ import { itemService } from '../services/itemService';
 import classes from '../assets/styles/cmps/ItemAdd.module.css';
 import { useRef } from 'react';
 import { useTheme } from '@mui/material';
+import SelectLocation from './SelectLocation';
+import { Locations } from '../lib/Locations';
+import { ItemCategories } from '../lib/ItemCategories';
 
 const EMPTY_FORM_DATA = {
   title: '',
-  category: 'furniture',
-  location: '',
+  category: ItemCategories.Furniture.value,
+  location: Locations.TelAviv.value,
   description: '',
   phone: '',
   image: null,
@@ -33,7 +36,7 @@ const DEV_TEST_DATA = {
 
 export default function ItemAdd(user) {
   const [open, setOpen] = React.useState(false);
-  const [itemToAdd, setItemToAdd] = React.useState(DEV_TEST_DATA);
+  const [itemToAdd, setItemToAdd] = React.useState(EMPTY_FORM_DATA);
   const { palette } = useTheme();
 
   const handleSubmit = async (ev) => {
@@ -82,7 +85,7 @@ export default function ItemAdd(user) {
         Add item
       </Button>
       <Dialog className={classes.dialog} open={open} onClose={handleClose}>
-        <DialogTitle sx={{ borderBottom: `2px solid ${palette.primary.main}` }}>
+        <DialogTitle sx={{borderBottom: `2px solid ${palette.primary.main}` }}>
           Add item
         </DialogTitle>
         <DialogContent>
@@ -106,7 +109,12 @@ export default function ItemAdd(user) {
               onChange={handleChange}
               className={[classes.itemAddField, classes.selectCategory]}
             />
-            <TextField
+            <SelectLocation
+              value={itemToAdd.location}
+              onChange={handleChange}
+              className={[classes.itemAddField, classes.selectCategory]}
+            />
+            {/* <TextField
               className={classes.itemAddField}
               name='location'
               value={itemToAdd.location}
@@ -118,7 +126,7 @@ export default function ItemAdd(user) {
               type='text'
               fullWidth
               variant='standard'
-            />
+            /> */}
             <TextField
               className={classes.itemAddField}
               name='description'

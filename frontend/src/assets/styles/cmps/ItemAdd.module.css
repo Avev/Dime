@@ -1,5 +1,6 @@
 .itemAddField {
   margin-bottom: 1rem !important;
+  min-width: 500px;
 }
 
 .dialog {
