@@ -9,90 +9,6 @@ const {request} = require("express");
 
 const redirectURL = 'http://localhost:3000'
 
-// const categoryDict = {
-//     furniture: 'furniture',
-//     table: 'furniture',
-//     desk: 'furniture',
-//     chair: 'furniture',
-//     bed: 'furniture',
-//     sofa: 'furniture',
-//     closet: 'furniture',
-//     shelf: 'furniture',
-//     mattress: 'furniture',
-//
-//     electronics: 'electronics',
-//     speakers: 'electronics',
-//     computer: 'electronics',
-//     lamp: 'electronics',
-//     ssd: 'electronics',
-//     hdd: 'electronics',
-//     gpu: 'electronics',
-//     cpu: 'electronics',
-//     case: 'electronics',
-//     phone: 'electronics',
-//     telephone: 'electronics',
-//     screen: 'electronics',
-//     monitor: 'electronics',
-//     keyboard: 'electronics',
-//     mouse: 'electronics',
-//     toaster: 'electronics',
-//     machine: 'electronics',
-//     printer: 'electronics',
-//     fax: 'electronics',
-//     console: 'electronics',
-//     calculator: 'electronics',
-//     clock: 'electronics',
-//     radiator: 'electronics',
-//     oven: 'electronics',
-//
-//     clothes: 'clothes',
-//     pants: 'clothes',
-//     shirt: 'clothes',
-//     shirts: 'clothes',
-//     socks: 'clothes',
-//     coat: 'clothes',
-//     coats: 'clothes',
-//     shoes: 'clothes',
-//     belt: 'clothes',
-//     belts: 'clothes',
-//     hat: 'clothes',
-//     hats: 'clothes',
-//     scarf: 'clothes',
-//     jacket: 'clothes',
-//     jackets: 'clothes',
-//     glasses: 'clothes',
-//     gloves: 'clothes',
-//
-//     book: 'books/media',
-//     books: 'books/media',
-//     media: 'books/media',
-//     music: 'books/media',
-//     novel: 'books/media',
-//
-//     sport: 'sports',
-//     sports: 'sports',
-//     weight: 'sports',
-//     weights: 'sports',
-//     dumbbell: 'sports',
-//     dumbbells: 'sports',
-//     ball: 'sports',
-//     balls: 'sports',
-//     training: 'sports',
-//     bottle: 'lifestyle',
-//     bottles: 'lifestyle',
-//
-//     game: 'games',
-//     games: 'games',
-//     tabletop: 'games',
-//
-//     lifestyle: 'lifestyle',
-//     lifestyles: 'lifestyle',
-//     cream: 'lifestyle',
-//     spray: 'lifestyle',
-//     makeup: 'lifestyle',
-//     mascara: 'lifestyle',
-//     eyeliner: 'lifestyle',
-// }
 
 // endpoint for checking if the user is logged and if so to get it
 router.get('/login/success', (req, res) => {
@@ -128,16 +44,6 @@ router.get('/google/redirect', passport.authenticate('google'
     // failureRedirect: redirectURL,
 ), async (req, res) => {
     try {
-        let categoryCounter = {
-            furniture: 0,
-            electronics: 0,
-            cloths: 0,
-            'books/media': 0,
-            sports: 0,
-            games: 0,
-            lifestyle: 0
-        };
-
         let keywordCounter = {
             furniture: 0,
             table: 0,
@@ -187,10 +93,10 @@ router.get('/google/redirect', passport.authenticate('google'
             shoes: 0,
             belt: 0,
             belts: 0,
-            hat: 0,
-            hats: 0,
             scarf: 0,
             jacket: 0,
+            dress: 0,
+            skirt: 0,
             jackets: 0,
             glasses: 0,
             gloves: 0,
@@ -273,11 +179,6 @@ router.get('/google/redirect', passport.authenticate('google'
                                 }
                                 let title = res.data.payload.headers.find(x => x.name === 'Subject').value;
                                 let lower_case_title = title.toLowerCase();
-                                // for (let k in categoryDict) {
-                                //     if (lower_case_title.includes(k)) {
-                                //         categoryCounter[categoryDict[k]] += 1;
-                                //     }
-                                // }
                                 for (let k in keywordCounter) {
                                     if (lower_case_title.includes(k)) {
                                         keywordCounter[k] += 1;
@@ -343,17 +244,6 @@ router.get('/google/redirect', passport.authenticate('google'
                 delete friends_viewed_listings[k];
             }
         }
-        // finds the 3 most wanted categories for the user and updates his profile in the database
-        // let categories_items = Object.keys(categoryCounter).map((key) => {
-        //     return [key, categoryCounter[key]];
-        // });
-        // categories_items.sort((first, second) => {
-        //     return second[1] - first[1];
-        // });
-        // let top_categories = [];
-        // for (let k=0; k < 3; k++) {
-        //     top_categories.push(categories_items[k][0]);
-        // }
 
         // finds the 5 most wanted keywords that have listings for them in the db
         let keywords_items = Object.keys(keywordCounter).map((key) => {
@@ -413,7 +303,9 @@ router.get('/google/redirect', passport.authenticate('google'
         });
         let top_viewed_listings = [];
         for (let k=0; k < 5; k++) {
-            top_viewed_listings.push(user_viewed_listings_items[k][0]);
+            if (user_viewed_listings_items.length > k) {
+                top_viewed_listings.push(user_viewed_listings_items[k][0]);
+            }
         }
 
         // add random listings to the lists that are not full
