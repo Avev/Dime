@@ -1,8 +1,8 @@
 # Dime
 
 ## Description
-The Project is a site used to browse and list items to give away, which gives you personalized recommendation for items you might be interested in, it also lets the user log in via google account.
-It uses React js for the client, Node.js for the server, and MongoDB for the database.
+The Project is a site used to browse and list items to give away, which gives you personalized recommendation for items you might be interested in, it also lets the user log in via google account.  
+It uses React js for the client, Node.js for the server, and MongoDB for the database.  
 The recommendation system use the user's promotional emails and google contacts to learn what he might be interested in and give him recommendations accordingly in the site.
 
 ## Features
